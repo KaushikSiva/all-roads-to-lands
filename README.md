@@ -57,7 +57,7 @@ Convex serializes the change when a participant switches cities: the previous ci
 
 | Layer | Choice | Purpose |
 | --- | --- | --- |
-| Experience | Next.js 16 + React 19 | App Router web application |
+| Experience | Next.js API + React 19 | App Router application packaged for Workers with vinext |
 | Language | TypeScript | Frontend and transactional backend |
 | Live backend | Convex | Database, mutations, actions, subscriptions |
 | Music data | JamBase Data API v3 | City identity, coordinates, events, images |
@@ -160,7 +160,8 @@ City and live-event content is powered by JamBase. Event links are displayed wit
 
 ```bash
 npm run dev             # Next.js development server
-npm run build           # Production build
+npm run build           # Worker-compatible vinext production build
+npm run build:next      # Reference Next.js production build
 npm run lint            # ESLint
 npm run typecheck       # TypeScript validation
 npm run convex:dev      # Convex development sync
