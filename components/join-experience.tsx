@@ -137,12 +137,30 @@ function JoinLayout(props: JoinLayoutProps) {
     <main className="join-page">
       <div className="join-sun" aria-hidden="true" />
       <nav className="join-nav">
-        <Link href="/" className="wordmark">
+        <Link
+          href="/"
+          prefetch={false}
+          onClick={(event) => {
+            event.preventDefault();
+            window.location.assign("/");
+          }}
+          className="wordmark"
+        >
           <span className="brand-orbit" />
           <span>ALL ROADS</span>
           <span className="brand-light">TO THE LANDS</span>
         </Link>
-        <Link href="/" className="back-link">View live wall ↗</Link>
+        <Link
+          href="/"
+          prefetch={false}
+          onClick={(event) => {
+            event.preventDefault();
+            window.location.assign("/");
+          }}
+          className="back-link"
+        >
+          View live wall ↗
+        </Link>
       </nav>
 
       <section className="join-content">
@@ -214,7 +232,17 @@ function JoinLayout(props: JoinLayoutProps) {
               <p className="eyebrow">YOU’RE ON THE MAP</p>
               <h1>{props.selected?.name}<br /><em>is arriving.</em></h1>
               <p>Your route just lit up on the live wall.</p>
-              <Link href="/" className="submit-city">Watch it land <span>↗</span></Link>
+              <Link
+                href="/"
+                prefetch={false}
+                onClick={(event) => {
+                  event.preventDefault();
+                  window.location.assign("/");
+                }}
+                className="submit-city"
+              >
+                Watch it land <span>↗</span>
+              </Link>
               <button className="change-city" onClick={() => props.setQuery("")}>Choose a different city</button>
             </motion.div>
           )}

@@ -62,7 +62,7 @@ function WallCanvas({
       <div className="fog fog-two" aria-hidden="true" />
 
       <header className="wall-header">
-        <Link href="/" className="wordmark" aria-label="All Roads Lead to the Lands">
+        <Link href="/" prefetch={false} className="wordmark" aria-label="All Roads Lead to the Lands">
           <span className="brand-orbit" />
           <span>ALL ROADS</span>
           <span className="brand-light">TO THE LANDS</span>
@@ -202,7 +202,17 @@ function WallCanvas({
               <h2>Put your city<br />on the map.</h2>
               <QRCodeSVG value={joinUrl} size={184} bgColor="#f4efdf" fgColor="#11120f" level="M" />
               <p>Scan to add your origin. The wall updates the moment you arrive.</p>
-              <Link href="/join" className="invite-link">Or add it on this screen →</Link>
+              <Link
+                href="/join"
+                prefetch={false}
+                onClick={(event) => {
+                  event.preventDefault();
+                  window.location.assign("/join");
+                }}
+                className="invite-link"
+              >
+                Or add it on this screen →
+              </Link>
             </motion.div>
           </motion.div>
         )}

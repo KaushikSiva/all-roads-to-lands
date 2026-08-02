@@ -1,5 +1,6 @@
 import { copyFile, mkdir, rename, writeFile } from "node:fs/promises";
 import { join } from "node:path";
+import { pathToFileURL } from "node:url";
 
 const root = process.cwd();
 const targetDirectory = join(root, "dist", ".openai");
@@ -10,17 +11,30 @@ await copyFile(
   join(targetDirectory, "hosting.json"),
 );
 
-// vinext emits a fetch-compatible function as its default export. OpenAI Sites
-// runs a Cloudflare-style module worker, whose entrypoint must expose a default
-// object with a `fetch` method. Preserve the generated app and add that adapter.
 const serverDirectory = join(root, "dist", "server");
+const generatedEntry = join(serverDirectory, "index.js");
+const { default: render } = await import(pathToFileURL(generatedEntry).href);
+const pages = {};
+
+for (const pathname of ["/", "/join"]) {
+  const response = await render(
+    new Request(`https://all-roads-to-lands.local${pathname}`),
+    {},
+    { waitUntil() {} },
+  );
+  if (!response.ok) {
+    throw new Error(`Could not prerender ${pathname}: HTTP ${response.status}`);
+  }
+  pages[pathname] = await response.text();
+}
+
 await rename(
-  join(serverDirectory, "index.js"),
+  generatedEntry,
   join(serverDirectory, "vinext-app.js"),
 );
 await writeFile(
-  join(serverDirectory, "index.js"),
-  `import handleRequest from "./vinext-app.js";\n\nexport default {\n  fetch(request, env, context) {\n    return handleRequest(request, env, context);\n  },\n};\n`,
+  generatedEntry,
+  `const pages = ${JSON.stringify(pages)};\n\nexport default {\n  fetch(request) {\n    const url = new URL(request.url);\n    const pathname = url.pathname === "/join/" ? "/join" : url.pathname;\n    const html = pages[pathname];\n    if (!html) {\n      return new Response("Not found", { status: 404 });\n    }\n    return new Response(request.method === "HEAD" ? null : html, {\n      status: 200,\n      headers: {\n        "content-type": "text/html; charset=utf-8",\n        "cache-control": "public, max-age=60, s-maxage=300",\n      },\n    });\n  },\n};\n`,
 );
 
 console.log("Prepared the OpenAI Sites worker artifact.");
