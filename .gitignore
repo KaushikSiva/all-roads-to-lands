@@ -1,0 +1,46 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+
+# Next.js
+/.next
+/out
+
+# Convex generated state and local deployment selector
+.convex/
+
+# secrets
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# tests and tooling
+/coverage
+*.tsbuildinfo
+next-env.d.ts
+
+# deployment
+.vercel
+
+# editors / OS
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# locally installed coding-agent skills
+.agents/
+.claude/
+skills-lock.json
+
+# logs
+*.log
+npm-debug.log*

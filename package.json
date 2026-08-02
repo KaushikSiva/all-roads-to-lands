@@ -1,0 +1,41 @@
+{
+  "name": "all-roads-to-lands",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test:python": "python3 -m unittest discover -s tests",
+    "convex:dev": "convex dev",
+    "convex:deploy": "convex deploy",
+    "jambase:probe": "python3 scripts/jambase_sync.py --cities London Chicago Tokyo"
+  },
+  "dependencies": {
+    "convex": "latest",
+    "d3-geo": "^3.1.1",
+    "framer-motion": "latest",
+    "next": "16.2.12",
+    "qrcode.react": "^4.2.0",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "topojson-client": "^3.1.0",
+    "world-atlas": "^2.0.2"
+  },
+  "devDependencies": {
+    "@types/d3-geo": "^3.1.0",
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "@types/topojson-client": "^3.1.5",
+    "eslint": "latest",
+    "eslint-config-next": "16.2.12",
+    "typescript": "latest"
+  },
+  "overrides": {
+    "postcss": "8.5.25",
+    "sharp": "0.35.3"
+  }
+}
