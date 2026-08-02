@@ -6,6 +6,7 @@
 # Next.js
 /.next
 /out
+/dist
 
 # Convex generated state and local deployment selector
 .convex/
