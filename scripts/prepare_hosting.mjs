@@ -10,6 +10,10 @@ await copyFile(
   join(root, ".openai", "hosting.json"),
   join(targetDirectory, "hosting.json"),
 );
+await copyFile(
+  join(root, "app", "icon.svg"),
+  join(root, "dist", "client", "icon.svg"),
+);
 
 const serverDirectory = join(root, "dist", "server");
 const generatedEntry = join(serverDirectory, "index.js");
