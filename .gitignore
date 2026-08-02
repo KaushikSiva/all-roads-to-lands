@@ -7,6 +7,7 @@
 /.next
 /out
 /dist
+/.vinext
 
 # Convex generated state and local deployment selector
 .convex/
