@@ -16,8 +16,9 @@ The interaction is intentionally immediate:
 
 1. Scan the QR code on the wall.
 2. Search for the city your trip began in.
-3. Submit once—no account, GPS, or precise location.
-4. Watch your route illuminate and the global ranking move.
+3. Pick the 2026 lineup artist you cannot miss.
+4. Submit once—no account, GPS, or precise location.
+5. Watch your route and sound pick move the live wall.
 
 ## Highlights
 
@@ -26,6 +27,7 @@ The interaction is intentionally immediate:
 - **JamBase-native city search** using stable IDs, centroids, metro information, and event counts
 - **Real concert media** from upcoming JamBase events, including compliant source links
 - **Audience participation** through a dedicated mobile `/join` flow and QR code
+- **Live sound pulse** with top-artist voting and the latest city-to-artist fan pick
 - **Privacy by design** with an anonymous browser ID and no device location collection
 - **Presentation fallback** that stays visually complete when backend services are unavailable
 - **Python operations tool** for validating JamBase access and exporting city/media snapshots
@@ -98,6 +100,7 @@ For real JamBase city IDs and representative upcoming-event imagery:
 
 ```bash
 npx convex run jambase:bootstrapDemo
+npx convex run jambase:bootstrapArtists
 ```
 
 If JamBase is temporarily unavailable, seed the coordinate-only fallback:
@@ -139,11 +142,15 @@ It normalizes city identifiers and centroids, then attaches the first upcoming e
 
 ### `cities`
 
-Normalized JamBase metadata, demo/live counters, coordinates, and optional representative event media. Indexed by stable JamBase city ID.
+Normalized JamBase metadata, coordinates, optional representative event media, and real submission counters. Displayed city totals come exclusively from live submissions. Indexed by stable JamBase city ID.
 
 ### `submissions`
 
-One active origin per anonymous participant ID. Indexed by participant and update time so the wall can highlight the newest arrival.
+One active origin and artist pick per anonymous participant ID. Indexed by participant and update time so the wall can highlight the newest arrival.
+
+### `artists`
+
+Normalized JamBase artist metadata plus real fan-pick counters. Presentation seeding imports metadata only; displayed artist totals come exclusively from live submissions. Indexed by stable JamBase artist ID.
 
 ## Privacy
 

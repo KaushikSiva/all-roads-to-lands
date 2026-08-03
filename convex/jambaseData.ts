@@ -54,3 +54,28 @@ export const seedCity = internalMutation({
     return await ctx.db.insert("cities", { ...args, liveCount: 0 });
   },
 });
+
+export const seedArtist = internalMutation({
+  args: {
+    jambaseArtistId: v.string(),
+    name: v.string(),
+    imageUrl: v.optional(v.string()),
+    artistUrl: v.optional(v.string()),
+    upcomingEvents: v.optional(v.number()),
+    demoCount: v.number(),
+  },
+  handler: async (ctx, args) => {
+    const existing = await ctx.db
+      .query("artists")
+      .withIndex("by_jambase_id", (q) => q.eq("jambaseArtistId", args.jambaseArtistId))
+      .unique();
+    if (existing) {
+      await ctx.db.patch(existing._id, {
+        ...args,
+        liveCount: existing.liveCount,
+      });
+      return existing._id;
+    }
+    return await ctx.db.insert("artists", { ...args, liveCount: 0 });
+  },
+});

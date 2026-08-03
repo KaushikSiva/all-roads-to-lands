@@ -3,6 +3,7 @@
 import { action, env, internalAction } from "./_generated/server";
 import { internal } from "./_generated/api";
 import { v } from "convex/values";
+import { outsideLands2026Lineup } from "../lib/outside-lands-2026";
 
 const JAMBASE_API = "https://api.data.jambase.com/v3";
 
@@ -82,6 +83,31 @@ function imageUrl(image: unknown): string | undefined {
   return undefined;
 }
 
+function normalizedName(value: string) {
+  return value
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/ø/g, "o")
+    .replace(/ł/g, "l")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+function normalizeArtist(artist: UnknownRecord) {
+  const jambaseArtistId = text(artist.identifier);
+  const name = text(artist.name);
+  if (!jambaseArtistId || !name) return null;
+  const upcomingEvents = artist["x-numUpcomingEvents"];
+  return {
+    jambaseArtistId,
+    name,
+    imageUrl: imageUrl(artist.image),
+    artistUrl: text(artist.url),
+    upcomingEvents: typeof upcomingEvents === "number" ? upcomingEvents : undefined,
+  };
+}
+
 async function findMedia(jambaseCityId: string) {
   const today = new Date().toISOString().slice(0, 10);
   const payload = await jambaseFetch(
@@ -121,6 +147,26 @@ export const searchCities = action({
   },
 });
 
+export const resolveLineupArtist = action({
+  args: { name: v.string() },
+  handler: async (_ctx, args) => {
+    const requested = normalizedName(args.name.slice(0, 100));
+    const officialName = outsideLands2026Lineup.find((name) => normalizedName(name) === requested);
+    if (!officialName) throw new Error("Artist is not on the 2026 lineup");
+
+    const payload = await jambaseFetch(
+      `/artists?artistName=${encodeURIComponent(officialName)}&perPage=8`,
+    );
+    const artists = Array.isArray(payload.artists) ? payload.artists : [];
+    const normalized = artists
+      .map((artist) => normalizeArtist(artist as UnknownRecord))
+      .filter((artist): artist is NonNullable<typeof artist> => artist !== null);
+    const exact = normalized.find((artist) => normalizedName(artist.name) === requested);
+    if (!exact) throw new Error("JamBase artist record was not found");
+    return exact;
+  },
+});
+
 export const enrichCity = action({
   args: { jambaseCityId: v.string() },
   handler: async (ctx, args) => {
@@ -139,20 +185,20 @@ export const bootstrapDemo = internalAction({
   args: {},
   handler: async (ctx) => {
     const seeds = [
-      ["London", "GB", 212],
-      ["Los Angeles", "US", 196],
-      ["Chicago", "US", 173],
-      ["New York", "US", 161],
-      ["Seattle", "US", 149],
-      ["Tokyo", "JP", 128],
-      ["Mexico City", "MX", 112],
-      ["Toronto", "CA", 104],
-      ["Sydney", "AU", 91],
-      ["Berlin", "DE", 83],
+      ["London", "GB"],
+      ["Los Angeles", "US"],
+      ["Chicago", "US"],
+      ["New York", "US"],
+      ["Seattle", "US"],
+      ["Tokyo", "JP"],
+      ["Mexico City", "MX"],
+      ["Toronto", "CA"],
+      ["Sydney", "AU"],
+      ["Berlin", "DE"],
     ] as const;
     let imported = 0;
     let enriched = 0;
-    for (const [name, countryCode, demoCount] of seeds) {
+    for (const [name, countryCode] of seeds) {
       const payload = await jambaseFetch(
         `/geographies/cities?geoCityName=${encodeURIComponent(name)}&geoCountryIso2=${countryCode}&perPage=5`,
       );
@@ -162,7 +208,7 @@ export const bootstrapDemo = internalAction({
         .find((item) => item?.name.toLowerCase() === name.toLowerCase()) ??
         normalizeCity((cities[0] ?? {}) as UnknownRecord);
       if (!city) continue;
-      await ctx.runMutation(internal.jambaseData.seedCity, { ...city, demoCount });
+      await ctx.runMutation(internal.jambaseData.seedCity, { ...city, demoCount: 0 });
       imported += 1;
       const media = await findMedia(city.jambaseCityId);
       if (media) {
@@ -174,5 +220,35 @@ export const bootstrapDemo = internalAction({
       }
     }
     return { imported, enriched };
+  },
+});
+
+export const bootstrapArtists = internalAction({
+  args: {},
+  handler: async (ctx) => {
+    const seeds = [
+      "Charli xcx",
+      "RÜFÜS DU SOL",
+      "The Strokes",
+      "The xx",
+      "Baby Keem",
+      "Turnstile",
+      "Djo",
+      "Labrinth",
+    ] as const;
+    let imported = 0;
+    for (const name of seeds) {
+      const payload = await jambaseFetch(
+        `/artists?artistName=${encodeURIComponent(name)}&perPage=8`,
+      );
+      const artists = Array.isArray(payload.artists) ? payload.artists : [];
+      const artist = artists
+        .map((item) => normalizeArtist(item as UnknownRecord))
+        .find((item) => item && normalizedName(item.name) === normalizedName(name));
+      if (!artist) continue;
+      await ctx.runMutation(internal.jambaseData.seedArtist, { ...artist, demoCount: 0 });
+      imported += 1;
+    }
+    return { imported };
   },
 });

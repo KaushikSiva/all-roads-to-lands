@@ -8,7 +8,7 @@ import { useMemo, useState, useSyncExternalStore } from "react";
 import { api } from "@/convex/_generated/api";
 import { isConvexConfigured } from "./app-providers";
 import { demoMapData } from "./demo-data";
-import type { CityPoint, LiveMapData } from "./types";
+import type { ArtistPoint, CityPoint, LiveMapData } from "./types";
 import { WorldMap } from "./world-map";
 
 export function WorldWall() {
@@ -50,6 +50,7 @@ function WallCanvas({
   const selected =
     data.cities.find((city) => city.jambaseCityId === selectedId) ?? data.latest ?? data.cities[0];
   const ranked = useMemo(() => [...data.cities].sort((a, b) => b.count - a.count), [data.cities]);
+  const rankedArtists = useMemo(() => [...data.artists].sort((a, b) => b.count - a.count), [data.artists]);
 
   function select(city: CityPoint) {
     setSelectedId(city.jambaseCityId);
@@ -72,7 +73,7 @@ function WallCanvas({
           <span>AUG 7–9, 2026</span>
         </div>
         <button className="join-trigger" onClick={() => setShowInvite(true)}>
-          Add your city <span aria-hidden="true">↗</span>
+          Add your route + sound <span aria-hidden="true">↗</span>
         </button>
       </header>
 
@@ -125,6 +126,8 @@ function WallCanvas({
             ))}
           </ol>
         </aside>
+
+        <ArtistPulse artists={rankedArtists} latestPick={data.latestPick} />
 
         <div className="selected-city" aria-live="polite">
           <AnimatePresence mode="wait">
@@ -199,9 +202,9 @@ function WallCanvas({
                 ×
               </button>
               <span className="invite-kicker">YOUR JOURNEY STARTS HERE</span>
-              <h2>Put your city<br />on the map.</h2>
+              <h2>Pin your route.<br />Pick your sound.</h2>
               <QRCodeSVG value={joinUrl} size={184} bgColor="#f4efdf" fgColor="#11120f" level="M" />
-              <p>Scan to add your origin. The wall updates the moment you arrive.</p>
+              <p>Scan to add your city and the 2026 artist you can’t miss. Both signals update live.</p>
               <Link
                 href="/join"
                 prefetch={false}
@@ -218,6 +221,59 @@ function WallCanvas({
         )}
       </AnimatePresence>
     </main>
+  );
+}
+
+function ArtistPulse({
+  artists,
+  latestPick,
+}: {
+  artists: ArtistPoint[];
+  latestPick?: LiveMapData["latestPick"];
+}) {
+  return (
+    <aside className="artist-pulse" aria-label="Top fan artist picks">
+      <div className="pulse-heading">
+        <span className="sound-wave" aria-hidden="true"><i /><i /><i /><i /></span>
+        <span>LIVE SOUND PULSE</span>
+      </div>
+      <ol>
+        {artists.length > 0 ? (
+          artists.slice(0, 5).map((artist, index) => (
+            <motion.li layout key={artist.jambaseArtistId}>
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <strong>{artist.name}</strong>
+              <motion.b
+                key={artist.count}
+                initial={{ scale: 1.35, y: -5 }}
+                animate={{ scale: 1, y: 0 }}
+                transition={{ type: "spring", stiffness: 420, damping: 18 }}
+              >
+                {artist.count.toLocaleString()}
+              </motion.b>
+            </motion.li>
+          ))
+        ) : (
+          <motion.li className="pulse-empty" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+            Awaiting the first fan pick
+          </motion.li>
+        )}
+      </ol>
+      {latestPick && (
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={`${latestPick.city.jambaseCityId}-${latestPick.artist.jambaseArtistId}`}
+            className="latest-pick"
+            initial={{ opacity: 0, x: 12 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -10 }}
+          >
+            <span>LATEST FAN PICK</span>
+            <strong>{latestPick.city.name} → {latestPick.artist.name}</strong>
+          </motion.div>
+        </AnimatePresence>
+      )}
+    </aside>
   );
 }
 
