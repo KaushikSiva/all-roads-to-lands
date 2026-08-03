@@ -23,9 +23,22 @@ export default defineSchema({
     .index("by_jambase_id", ["jambaseCityId"])
     .index("by_live_count", ["liveCount"]),
 
+  artists: defineTable({
+    jambaseArtistId: v.string(),
+    name: v.string(),
+    imageUrl: v.optional(v.string()),
+    artistUrl: v.optional(v.string()),
+    upcomingEvents: v.optional(v.number()),
+    demoCount: v.number(),
+    liveCount: v.number(),
+  })
+    .index("by_jambase_id", ["jambaseArtistId"])
+    .index("by_demo_count_and_live_count", ["demoCount", "liveCount"]),
+
   submissions: defineTable({
     participantId: v.string(),
     cityId: v.id("cities"),
+    artistId: v.optional(v.id("artists")),
     updatedAt: v.number(),
   })
     .index("by_participant", ["participantId"])

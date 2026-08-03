@@ -21,6 +21,7 @@ export type CityPoint = {
 
 export type LiveMapData = {
   cities: CityPoint[];
+  artists: ArtistPoint[];
   stats: {
     travelers: number;
     liveTravelers: number;
@@ -30,6 +31,10 @@ export type LiveMapData = {
     farthestCity?: CityPoint;
   };
   latest?: CityPoint;
+  latestPick?: {
+    city: CityPoint;
+    artist: ArtistPoint;
+  };
   mode: "live" | "demo";
 };
 
@@ -42,4 +47,18 @@ export type CityCandidate = {
   longitude: number;
   metroName?: string;
   upcomingEvents?: number;
+};
+
+export type ArtistCandidate = {
+  jambaseArtistId: string;
+  name: string;
+  imageUrl?: string;
+  artistUrl?: string;
+  upcomingEvents?: number;
+};
+
+export type ArtistPoint = ArtistCandidate & {
+  demoCount: number;
+  liveCount: number;
+  count: number;
 };
