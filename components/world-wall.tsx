@@ -235,7 +235,7 @@ function ArtistPulse({
     <aside className="artist-pulse" aria-label="Top fan artist picks">
       <div className="pulse-heading">
         <span className="sound-wave" aria-hidden="true"><i /><i /><i /><i /></span>
-        <span>LIVE SOUND PULSE</span>
+        <span>ARTIST LEADERBOARD</span>
       </div>
       <ol>
         {artists.length > 0 ? (
@@ -255,7 +255,7 @@ function ArtistPulse({
           ))
         ) : (
           <motion.li className="pulse-empty" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            Awaiting the first fan pick
+            <Link href="/join" prefetch={false}>No verified artists loaded · add the first pick →</Link>
           </motion.li>
         )}
       </ol>
