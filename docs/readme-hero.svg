@@ -1,0 +1,34 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#10110F"/>
+  <defs>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(802 305) rotate(90) scale(318 451)">
+      <stop stop-color="#394035" stop-opacity=".72"/><stop offset="1" stop-color="#10110F" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="blur"><feGaussianBlur stdDeviation="3"/></filter>
+    <pattern id="grain" width="38" height="38" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r=".7" fill="#F3EEDF" opacity=".09"/></pattern>
+  </defs>
+  <rect width="1200" height="630" fill="url(#glow)"/><rect width="1200" height="630" fill="url(#grain)"/>
+  <path d="M0 86H1200M0 545H1200" stroke="#F3EEDF" stroke-opacity=".15"/>
+  <circle cx="58" cy="43" r="14" stroke="#F3EEDF" stroke-opacity=".55"/><circle cx="69" cy="34" r="3.5" fill="#FF6B35"/>
+  <text x="85" y="48" fill="#F3EEDF" font-family="Arial, sans-serif" font-weight="700" font-size="16" letter-spacing="2">ALL ROADS TO THE LANDS</text>
+  <text x="1160" y="47" text-anchor="end" fill="#AAA99E" font-family="monospace" font-size="11" letter-spacing="1.5">LIVE · AUG 07—09 · 2026</text>
+  <text x="58" y="177" fill="#FF6B35" font-family="monospace" font-size="13" font-weight="700" letter-spacing="2">ONE FESTIVAL. A WHOLE WORLD ARRIVING.</text>
+  <text x="55" y="253" fill="#F3EEDF" font-family="Arial, sans-serif" font-size="64" font-weight="700" letter-spacing="-4">Every road</text>
+  <text x="55" y="320" fill="#F3EEDF" font-family="Arial, sans-serif" font-size="64" font-weight="700" letter-spacing="-4">has a story.</text>
+  <text x="58" y="369" fill="#AAA99E" font-family="Arial, sans-serif" font-size="18">A live, privacy-first map of the cities and sounds</text>
+  <text x="58" y="398" fill="#AAA99E" font-family="Arial, sans-serif" font-size="18">converging on Golden Gate Park.</text>
+  <rect x="58" y="445" width="220" height="50" rx="2" fill="#FF6B35"/>
+  <text x="168" y="476" text-anchor="middle" fill="#10110F" font-family="monospace" font-size="12" font-weight="700" letter-spacing="1">OPEN THE LIVE WALL ↗</text>
+  <g transform="translate(548 122)">
+    <path d="M36 129 77 77l82-23 74 19 54-33 76 22 34 49 75 2 66 61-33 32 22 47-67 19-43 66-75-7-56 29-56-52-91-4-25-58-60-18 17-55-31-43 76-4Z" fill="#1E221D" stroke="#F3EEDF" stroke-opacity=".18"/>
+    <path d="M113 235C223 230 291 268 408 258" stroke="#FF6B35" stroke-width="2" stroke-dasharray="5 6"/>
+    <path d="M174 99C245 173 303 215 408 258" stroke="#FF6B35" stroke-opacity=".55" stroke-width="1.5" stroke-dasharray="4 7"/>
+    <path d="M512 193C476 219 455 238 408 258" stroke="#FF6B35" stroke-opacity=".7" stroke-width="1.5" stroke-dasharray="4 7"/>
+    <path d="M268 315C319 295 359 276 408 258" stroke="#FF6B35" stroke-opacity=".6" stroke-width="1.5" stroke-dasharray="4 7"/>
+    <circle cx="113" cy="235" r="5" fill="#FF6B35"/><circle cx="174" cy="99" r="4" fill="#FF6B35"/><circle cx="512" cy="193" r="4" fill="#FF6B35"/><circle cx="268" cy="315" r="4" fill="#FF6B35"/>
+    <circle cx="408" cy="258" r="17" fill="#FF6B35" opacity=".22" filter="url(#blur)"/><circle cx="408" cy="258" r="6" fill="#FF6B35"/>
+    <text x="421" y="263" fill="#F3EEDF" font-family="monospace" font-size="10" font-weight="700" letter-spacing="1">SAN FRANCISCO</text>
+  </g>
+  <text x="58" y="584" fill="#777A73" font-family="monospace" font-size="10" letter-spacing="1.5">NEXT.JS · CONVEX · JAMBASE · TYPESCRIPT · FRAMER MOTION</text>
+  <text x="1142" y="584" text-anchor="end" fill="#FF6B35" font-family="monospace" font-size="10" letter-spacing="1.5">REAL COUNTS · ZERO GPS</text>
+</svg>

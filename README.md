@@ -1,12 +1,39 @@
-# All Roads Lead to the Lands
+<div align="center">
+  <img src="./docs/readme-hero.svg" alt="All Roads to the Lands — a live festival journey map" width="100%" />
+  <h1>All Roads to the Lands</h1>
+  <p><strong>One festival. A whole world arriving.</strong></p>
+  <p>
+    <a href="https://all-roads-to-lands.kaushik0788.chatgpt.site"><strong>Live wall</strong></a>
+    ·
+    <a href="https://all-roads-to-lands.kaushik0788.chatgpt.site/join"><strong>Cast a fan pick</strong></a>
+    ·
+    <a href="#quick-start"><strong>Run locally</strong></a>
+  </p>
+  <p>
+    <img alt="Next.js" src="https://img.shields.io/badge/Next.js-16-111111?style=flat-square&amp;logo=nextdotjs" />
+    <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-strict-3178C6?style=flat-square&amp;logo=typescript&amp;logoColor=white" />
+    <img alt="Convex" src="https://img.shields.io/badge/Convex-realtime-EE342F?style=flat-square" />
+    <img alt="JamBase" src="https://img.shields.io/badge/JamBase-Data_API-FF6B35?style=flat-square" />
+    <a href="./LICENSE"><img alt="MIT License" src="https://img.shields.io/badge/license-MIT-97CA00?style=flat-square" /></a>
+  </p>
+</div>
 
-**One festival. A whole world arriving.**
+## About
 
-All Roads Lead to the Lands is a live, cinematic map of where Outside Lands attendees began their journey. A visitor chooses a city, an illuminated route lands in San Francisco, and every connected screen updates immediately.
+All Roads to the Lands is a live, cinematic map of where Outside Lands attendees began their journey—and which 2026 artist they most want to see. A fan selects a city and artist, an illuminated route lands in San Francisco, the artist leaderboard moves, and every connected screen updates immediately.
 
-Built with JamBase city and concert data, Convex transactions and subscriptions, Next.js, TypeScript, Python, and Framer Motion.
+It is built as a public, privacy-first festival experiment: no login, no GPS, no precise location, and no invented popularity numbers. Displayed rankings come from real anonymous submissions stored in Convex; JamBase supplies verified city, artist, event, and media metadata.
 
-> Unofficial community project. Not affiliated with or endorsed by Outside Lands.
+> **Unofficial community project.** Not affiliated with or endorsed by Outside Lands.
+
+## Live experience
+
+| Surface | What it does | Link |
+| --- | --- | --- |
+| Global wall | Animated routes, live city rankings, artist leaderboard, latest fan pick | [Open the wall ↗](https://all-roads-to-lands.kaushik0788.chatgpt.site) |
+| Fan ballot | Two-step city and 2026 lineup selection designed for mobile and QR entry | [Add your journey ↗](https://all-roads-to-lands.kaushik0788.chatgpt.site/join) |
+
+The wall is presentation-ready, but it is not a static mockup: Convex subscriptions update rankings and totals as submissions land.
 
 ## Why this exists
 
@@ -19,6 +46,14 @@ The interaction is intentionally immediate:
 3. Pick the 2026 lineup artist you cannot miss.
 4. Submit once—no account, GPS, or precise location.
 5. Watch your route and sound pick move the live wall.
+
+## Design principles
+
+- **The map is the hero.** Rankings support the global journey instead of turning the experience into a dashboard.
+- **Two signals, one moment.** Every submission joins a route and an artist pick atomically.
+- **Real means real.** Seed tasks import metadata with zero votes; they never manufacture leaderboard counts.
+- **Venue-screen legibility.** Type, motion, contrast, and QR entry work from across a room as well as on a phone.
+- **Graceful failure.** A presentation fallback keeps the composition intact while clearly identifying non-live data.
 
 ## Highlights
 
@@ -65,6 +100,17 @@ Convex serializes the change when a participant switches cities: the previous ci
 | Music data | JamBase Data API v3 | City identity, coordinates, events, images |
 | Motion | Framer Motion + SVG | Route drawing, ranking movement, transitions |
 | Operations | Python 3.12 | API verification and data snapshot tooling |
+
+### Languages and repository map
+
+| Language | Where it lives | Responsibility |
+| --- | --- | --- |
+| TypeScript / TSX | `app/`, `components/`, `convex/`, `lib/` | Product UI, realtime queries, transactions, and JamBase actions |
+| CSS | `app/globals.css` | Responsive wall and mobile-ballot visual system |
+| Python | `scripts/`, `tests/` | JamBase verification, normalization, snapshot tooling, and unit tests |
+| SVG | `components/world-map.tsx`, `docs/` | Projected world map, route animation, and repository artwork |
+
+The repository is TypeScript-first. GitHub calculates its language bar automatically from committed source; the table above explains how each language contributes to the product.
 
 ## Quick start
 

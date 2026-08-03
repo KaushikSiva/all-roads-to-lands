@@ -70,8 +70,10 @@ export const getLiveMap = query({
         liveCount: artist.liveCount,
         count: artist.liveCount,
       }))
-      .filter((artist) => artist.count > 0)
-      .sort((a, b) => b.count - a.count);
+      // Keep verified lineup metadata visible before the first vote. A zero is a
+      // real live count; filtering it out made the entire leaderboard vanish on
+      // fresh deployments even though the artists had been imported correctly.
+      .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
 
     const latestSubmission = await ctx.db
       .query("submissions")
